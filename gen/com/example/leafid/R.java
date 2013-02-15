@@ -19,13 +19,15 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f040000;
         public static final int activity_vertical_margin=0x7f040001;
+        public static final int imageview_height=0x7f040002;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
+        public static final int tub=0x7f020001;
     }
     public static final class id {
-        public static final int BtnColorPickerCancel=0x7f080004;
-        public static final int BtnColorPickerOk=0x7f080005;
+        public static final int BtnNext=0x7f080005;
+        public static final int BtnPrev=0x7f080004;
         public static final int ButtonBar=0x7f080002;
         public static final int ListView=0x7f080001;
         public static final int TopLayout=0x7f080000;

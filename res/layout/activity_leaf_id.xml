@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_above="@+id/ButtonBar" />
 
     <RelativeLayout
@@ -37,23 +36,23 @@
             android:background="?android:attr/dividerVertical" 
             android:layout_centerHorizontal="true"/>
         <Button
-            android:id="@+id/BtnColorPickerCancel"
+            android:id="@+id/BtnPrev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/ViewColorPickerHelper"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@android:string/cancel" 
+            android:text="Prev" 
             android:layout_alignParentBottom="true"/>
         <Button
-            android:id="@+id/BtnColorPickerOk"
+            android:id="@+id/BtnNext"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@android:string/ok" 
+            android:text="Next" 
             android:layout_alignParentBottom="true" 
             android:layout_toRightOf="@id/ViewColorPickerHelper"/>
     </RelativeLayout>

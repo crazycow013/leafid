@@ -22,13 +22,16 @@ public class LeafID extends Activity {
 
         topLayout = (RelativeLayout) findViewById(R.id.TopLayout);
         listView = (ListView) findViewById(R.id.ListView);
-        ArrayList<String> d = new ArrayList<String>();
+        
+        ArrayList<Integer> d = new ArrayList<Integer>();
         for(int i = 0; i < 30; i++){
-            d.add(String.valueOf(i));
+            d.add(i);
         }
-        ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, d);
+        ArrayAdapter<Integer> aa = new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, d);
         listView.setAdapter(aa);
         bTree = BTree.initialize();
+        
+        
     }
 
     @Override

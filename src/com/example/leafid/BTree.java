@@ -13,25 +13,26 @@ abstract class BTree {
     public String getQuery() {
         return query;
     }
-    
-    public static BTree initialize(){
+
+    public static BTree initialize() {
         ArrayList<BTree> firstQuestions = new ArrayList<BTree>();
-        ArrayList<BTree> dummyAnswer = new ArrayList<BTree>();
-        dummyAnswer.add(new Answer("1", "Are you ghey?", new TreeCursor(0)));
-        dummyAnswer.add(new Answer("1", "Are you ghey??", new TreeCursor(1)));
-        firstQuestions.add(new Query("","Does the tree bear cones and have leaves that are needle-like?", dummyAnswer));
-        return new Query("", "", firstQuestions);
+        firstQuestions.add(new Query(
+                        "",
+                        "Does the tree bear cones and have leaves that are needle-like?"));
+        return new Query("", "");
     }
 }
 
 class Query extends BTree {
     private ArrayList<BTree> children;
 
-    public Query(String resultID, String query,
-                    ArrayList<BTree> children) {
+    public Query(String resultID, String query) {
         this.resultID = resultID;
         this.query = query;
-        this.children = children;
+    }
+
+    public void populateChildren() {
+        // TODO: Query database for children with parentID of resultID
     }
 
     public ArrayList<String> getChildQueries() {
@@ -47,7 +48,10 @@ class Query extends BTree {
         String fullResultID = resultID + choice;
         for (BTree b : children) {
             if (b.getResultID().equals(fullResultID))
-                return b;
+                if (b instanceof Query)
+                    ((Query) b).populateChildren();
+            return b;
+
         }
         return null;
     }
