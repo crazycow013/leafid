@@ -6,12 +6,13 @@ interface BTree {
   public boolean isLeaf();
 }
 
-class Node implements BTree{
-  String query;
-  ArrayList<BTree> children = new ArrayList<BTree>();
+class Query implements BTree{
+  // Level of the query (1 is root. Gets more specification as the level grows)
+  int level;
+  ArrayList<BTree> children;
   
-  public Node(String query, ArrayList<BTree> children) {
-    this.query = query;
+  public Query(int level, ArrayList<BTree> children) {
+    this.level = level;
     this.children = children;
   }
   
@@ -20,30 +21,18 @@ class Node implements BTree{
   }
 }
 
-class Leaf implements BTree {
-  TreeType answer;
+class Answer implements BTree {
+  ArrayList<BTree> children;
   
-  public Leaf(TreeType answer) {
-    this.answer = answer;
+  public Answer(ArrayList<BTree> children) {
+    this.children = children;
   }
   
   public boolean isLeaf() {
     return true;
   }
 }
-
-class TreeType {
-  String name;
-  String scientific;
-  boolean isEast;
-  
-  public TreeType(String name, String scientific, boolean isEast) {
-    this.name = name;
-    this.scientific = scientific;
-    this.isEast = isEast;
-  }
-}
-
+/*
 class myLeaves {
   public void main() {
     TreeType EasternWhitePine = new TreeType("Eastern White Pine", "Pinus strobus", true);
@@ -76,7 +65,7 @@ class myLeaves {
     /*****************************
      * Tier 5
      ****************************/
-    
+    /*
     // Needles clustered in groups of 3
     // Parent: at4c1
     at5c1array.add(new Leaf(PitchPine));
@@ -108,7 +97,7 @@ class myLeaves {
     
     // Needles clustered in groups of 2 or 3, and the cone scales thick and often tipped with spines?
     // Parent: at3c2
-    
+    /*
     at4c1array.add(at5c1);
     at4c1array.add(at5c2);
     at4c1array.add(at5c3);
@@ -124,7 +113,7 @@ class myLeaves {
     
     // EVERGREEN with needles arranged in clusters of 2-5
     // Parent: at2c1
-    
+    /*
     at3c1array.add(new Leaf(EasternWhitePine));
     at3c2array.add(at4c1);
     at3c2array.add(at4c2);
@@ -145,4 +134,5 @@ class myLeaves {
     
     
   }
- }
+  */
+ 
