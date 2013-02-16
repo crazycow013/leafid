@@ -13,7 +13,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -22,6 +21,7 @@ public class LeafID extends Activity {
     BTree bTree;
     RelativeLayout topLayout;
     ListView listView;
+    MyArrayAdapter aa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +37,37 @@ public class LeafID extends Activity {
         d.add(new QueryView(this, new Query("12345", "HELLO WORLD")));
         d.add(new QueryView(this, new Query("@#@!", "NIGGAS!")));
         formatListView();
-        final MyArrayAdapter aa = new MyArrayAdapter(this, d);
+        aa = new MyArrayAdapter(this, d);
         listView.setAdapter(aa);
-        listView.setOnItemClickListener(new OnItemClickListener(){
+        listView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
+                QueryView selected = getSelected();
+                if(selected != null)
+                selected.select();
                 aa.getItem(position).select();
             }
-            
         });
 
         bTree = BTree.initialize();
 
     }
 
+    private QueryView getSelected(){
+        for (int i = 0; i < aa.getCount(); i++){
+            if(aa.getItem(i).isSelected()){
+                return aa.getItem(i);
+            }
+        }
+        return null;
+    }
+    
     private void formatListView() {
         listView.setDivider(null);
         listView.setDividerHeight(0);
-        
+
     }
 
     @Override
@@ -94,7 +105,7 @@ public class LeafID extends Activity {
         }
 
         @Override
-        public QueryView getItem(int position){
+        public QueryView getItem(int position) {
             return list.get(position);
         }
     }

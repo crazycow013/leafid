@@ -47,6 +47,10 @@ public class QueryView extends RelativeLayout {
         else
             setBackgroundColor(Color.BLACK);
     }
+    
+    public boolean isSelected(){
+        return selected;
+    }
 
     // Apply layout parameters and prepare other UI elements.
     private void initializeViews() {
