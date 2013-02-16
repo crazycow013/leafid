@@ -1,6 +1,7 @@
 package com.example.leafid;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,21 +23,22 @@ public class TreeView extends RelativeLayout {
     }
 
     private void initializeViews() {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT, getDP(192));
-        setLayoutParams(params);
-        setBackgroundColor(getResources().getColor(
-                        android.R.color.holo_purple));
+        Resources r = getResources();
+        // For RelativeLayout
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        (int) r.getDimension(R.dimen.treeview_height));
+        setLayoutParams(params1);
+        
+        // For ImageView
+        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        (int) r.getDimension(R.dimen.treeview_height));
+        params2.setMargins(16, 16, 16, 8);
         ImageView iv = new ImageView(context);
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         iv.setImageResource(R.drawable.tub);
-        iv.setLayoutParams(params);
+        iv.setLayoutParams(params2);
         addView(iv);
     }
-    
-    private int getDP(int dps){
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        return (int) (dps * scale + 0.5f);
-    }
-
 }
