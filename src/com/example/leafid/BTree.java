@@ -14,12 +14,15 @@ abstract class BTree {
         return query;
     }
 
+    public abstract boolean isAnswer();
+
     public static BTree initialize() {
-        ArrayList<BTree> firstQuestions = new ArrayList<BTree>();
-        firstQuestions.add(new Query(
-                        "",
-                        "Does the tree bear cones and have leaves that are needle-like?"));
+       //TODO: Return the first questions a user sees.
         return new Query("", "");
+    }
+    
+    public static void populateChildren(Query query){
+        
     }
 }
 
@@ -31,10 +34,6 @@ class Query extends BTree {
         this.query = query;
     }
 
-    public void populateChildren() {
-        // TODO: Query database for children with parentID of resultID
-    }
-
     public ArrayList<String> getChildQueries() {
         ArrayList<String> result = new ArrayList<String>();
         for (BTree b : children) {
@@ -44,16 +43,20 @@ class Query extends BTree {
     }
 
     // Gets corresponding BTree based on user choice.
+    // Note: Children of resulting BTree are NOT initialized.
     public BTree getResponse(String choice) {
         String fullResultID = resultID + choice;
         for (BTree b : children) {
             if (b.getResultID().equals(fullResultID))
-                if (b instanceof Query)
-                    ((Query) b).populateChildren();
-            return b;
+                return b;
 
         }
         return null;
+    }
+
+    // Does this hold an answer?
+    public boolean isAnswer() {
+        return false;
     }
 }
 
@@ -65,6 +68,10 @@ class Answer extends BTree {
         this.resultID = resultID;
         this.query = query;
         this.tree = tree;
+    }
+
+    public boolean isAnswer() {
+        return true;
     }
 
 }

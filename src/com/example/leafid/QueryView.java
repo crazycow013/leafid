@@ -1,34 +1,37 @@
 package com.example.leafid;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+// Responsibilities: Display ImageView, TextView. If Query is selected.
+//                   Respond to Answer?
 public class QueryView extends RelativeLayout {
     private Context context;
     private Resources r;
-    private BTree nextQuery;
+    private BTree query;
     // Is this the user choice?
     private boolean selected;
-
+    
     public QueryView(Context context, AttributeSet attrs,
-                    BTree treeNode) {
+                    BTree query) {
         super(context, attrs);
         this.context = context;
-        this.nextQuery = treeNode;
+        this.query = query;
         initialize();
     }
 
-    public QueryView(Context context, BTree treeNode) {
+    public QueryView(Context context, BTree query) {
         super(context);
         this.context = context;
-        this.nextQuery = treeNode;
+        this.query = query;
         initialize();
     }
 
@@ -50,6 +53,11 @@ public class QueryView extends RelativeLayout {
     
     public boolean isSelected(){
         return selected;
+    }
+    
+    // Does this QueryView hold an Answer?
+    public boolean isAnswer(){
+        return query.isAnswer();
     }
 
     // Apply layout parameters and prepare other UI elements.
@@ -88,7 +96,7 @@ public class QueryView extends RelativeLayout {
                         RelativeLayout.TRUE);
 
         TextView tv = new TextView(context);
-        tv.setText(nextQuery.getQuery());
+        tv.setText(query.getQuery());
         tv.setLayoutParams(params);
         tv.setGravity(Gravity.BOTTOM);
         tv.setTextColor(Color.WHITE);
