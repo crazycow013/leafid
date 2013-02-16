@@ -3,9 +3,17 @@ package com.example.leafid;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -22,16 +30,33 @@ public class LeafID extends Activity {
 
         topLayout = (RelativeLayout) findViewById(R.id.TopLayout);
         listView = (ListView) findViewById(R.id.ListView);
-        
-        ArrayList<Integer> d = new ArrayList<Integer>();
-        for(int i = 0; i < 30; i++){
-            d.add(i);
-        }
-        ArrayAdapter<Integer> aa = new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, d);
+
+        ArrayList<QueryView> d = new ArrayList<QueryView>();
+        d.add(new QueryView(this, new Query("12345", "HELLO WORLD")));
+        d.add(new QueryView(this, new Query("@#@!", "NIGGAS!")));
+        d.add(new QueryView(this, new Query("12345", "HELLO WORLD")));
+        d.add(new QueryView(this, new Query("@#@!", "NIGGAS!")));
+        formatListView();
+        final MyArrayAdapter aa = new MyArrayAdapter(this, d);
         listView.setAdapter(aa);
+        listView.setOnItemClickListener(new OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+                aa.getItem(position).select();
+            }
+            
+        });
+
         bTree = BTree.initialize();
+
+    }
+
+    private void formatListView() {
+        listView.setDivider(null);
+        listView.setDividerHeight(0);
         
-        topLayout.addView(new TreeView(this, "1111"), 0);
     }
 
     @Override
@@ -40,4 +65,37 @@ public class LeafID extends Activity {
         return true;
     }
 
+    class MyArrayAdapter extends ArrayAdapter<QueryView> {
+
+        Context context;
+        ArrayList<QueryView> list;
+
+        public MyArrayAdapter(Context context,
+                        ArrayList<QueryView> list) {
+            super(context, android.R.layout.simple_list_item_1, list);
+            this.context = context;
+            this.list = list;
+        }
+
+        public View getView(int position, View convertView,
+                        ViewGroup parent) {
+            if (convertView == null) {
+                View view = list.get(position);
+
+                // For RelativeLayout
+                AbsListView.LayoutParams params1 = new AbsListView.LayoutParams(
+                                AbsListView.LayoutParams.MATCH_PARENT,
+                                (int) getResources()
+                                                .getDimension(R.dimen.queryview_height));
+                view.setLayoutParams(params1);
+                return view;
+            }
+            return convertView;
+        }
+
+        @Override
+        public QueryView getItem(int position){
+            return list.get(position);
+        }
+    }
 }

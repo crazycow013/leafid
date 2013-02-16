@@ -19,11 +19,13 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f040000;
         public static final int activity_vertical_margin=0x7f040001;
-        public static final int treeview_height=0x7f040002;
+        public static final int queryview_height=0x7f040002;
+        public static final int queryview_textsize=0x7f040003;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int tub=0x7f020001;
+        public static final int gradient=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int tub=0x7f020002;
     }
     public static final class id {
         public static final int BtnNext=0x7f080005;
