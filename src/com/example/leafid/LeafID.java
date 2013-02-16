@@ -31,7 +31,7 @@ public class LeafID extends Activity {
         listView.setAdapter(aa);
         bTree = BTree.initialize();
         
-        
+        topLayout.addView(new TreeView(this, "1111"), 0);
     }
 
     @Override
