@@ -44,9 +44,9 @@ public class LeafID extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
-                QueryView selected = getSelected();
-                if(selected != null)
-                selected.select();
+                int selectedIndex = getSelected();
+                if(selectedIndex != -1 && selectedIndex != position)
+                aa.getItem(selectedIndex).select();
                 aa.getItem(position).select();
             }
         });
@@ -55,13 +55,13 @@ public class LeafID extends Activity {
 
     }
 
-    private QueryView getSelected(){
+    private int getSelected(){
         for (int i = 0; i < aa.getCount(); i++){
             if(aa.getItem(i).isSelected()){
-                return aa.getItem(i);
+                return i;
             }
         }
-        return null;
+        return -1;
     }
     
     private void formatListView() {
