@@ -2,6 +2,9 @@ package com.example.leafid;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
+
 //Manages a question and follow-up questions. Identifies with resultID.
 abstract class BTree {
     protected String resultID, query;
@@ -17,41 +20,28 @@ abstract class BTree {
     public abstract boolean isAnswer();
 
     public static BTree initialize() {
-       //TODO: Return the first questions a user sees.
+        Log.d("BTREE", "??");
+        // TODO: Return the first questions a user sees.
         return new Query("", "");
     }
-    
-    public static void populateChildren(Query query){
-        
+
+    public static ArrayList<BTree> getChildren(Query query) {
+        ArrayList<BTree> result = new ArrayList<BTree>();
+        result.add(new Query("11", "HELLO WORLD!!"));
+        result.add(new Query("12", "NIGGAS!!!"));
+        result.add(new Query("13", "HELLO WORLD!!"));
+        result.add(new Query("14", "NIGGAS!!!"));
+        return result;
     }
 }
 
+// Queries do NOT manage their children. The abstract BTree class
+// will pull their children based on resultID (see getChildren(Context, Query)).
 class Query extends BTree {
-    private ArrayList<BTree> children;
 
     public Query(String resultID, String query) {
         this.resultID = resultID;
         this.query = query;
-    }
-
-    public ArrayList<String> getChildQueries() {
-        ArrayList<String> result = new ArrayList<String>();
-        for (BTree b : children) {
-            result.add(b.getQuery());
-        }
-        return result;
-    }
-
-    // Gets corresponding BTree based on user choice.
-    // Note: Children of resulting BTree are NOT initialized.
-    public BTree getResponse(String choice) {
-        String fullResultID = resultID + choice;
-        for (BTree b : children) {
-            if (b.getResultID().equals(fullResultID))
-                return b;
-
-        }
-        return null;
     }
 
     // Does this hold an answer?

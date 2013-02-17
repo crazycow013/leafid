@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,25 +28,31 @@ public class LeafID extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("LID", "wtf??");
         setContentView(R.layout.activity_leaf_id);
+        Log.d("LID", "wtf??");
 
         bTree = BTree.initialize();
+        Log.d("LID", "wtf??");
 
         topLayout = (RelativeLayout) findViewById(R.id.TopLayout);
         listView = (ListView) findViewById(R.id.ListView);
 
+
         // Display list of QueryViews.
-        listView.setDivider(null);
-        listView.setDividerHeight(0);
-        
         ArrayList<QueryView> d = new ArrayList<QueryView>();
-        d.add(new QueryView(this, new Query("12345", "HELLO WORLD")));
-        d.add(new QueryView(this, new Query("@#@!", "NIGGAS!")));
-        d.add(new QueryView(this, new Query("12345", "HELLO WORLD")));
-        d.add(new QueryView(this, new Query("@#@!", "NIGGAS!")));
-        
+        d.add(new QueryView(this, new Query("1", "HELLO")));
+        d.add(new QueryView(this, new Query("2", "N!")));
+        d.add(new QueryView(this, new Query("3", "HELLO")));
+        d.add(new QueryView(this, new Query("4", "NIGGAS!")));
+
+        Log.d("LID", "creating adapter");
         aa = new MyArrayAdapter(this, d);
         listView.setAdapter(aa);
+        Log.d("LID", "listView successfully set adapter");
+
+        listView.setDivider(null);
+        listView.setDividerHeight(0);
         
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -55,7 +62,7 @@ public class LeafID extends Activity {
                 if (selectedIndex != -1 && selectedIndex != position)
                     aa.getItem(selectedIndex).select();
                 aa.getItem(position).select();
-            }
+            } 
         });
 
         // Handle Button clicks.
@@ -63,16 +70,33 @@ public class LeafID extends Activity {
         Button btnPrev = (Button) findViewById(R.id.BtnPrev);
         btnNext.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {/*
+                Log.d("nOCL", "clicked!");
                 int selectedIndex = getSelected();
                 if (selectedIndex != -1) {
+                    QueryView selectedQueryView = aa
+                                    .getItem(selectedIndex);
+                    int resultID = selectedQueryView.getResultID();
+                    Log.d("nOCL", "selectedIndex: " + selectedIndex
+                                    + ", resultID: " + resultID);
                     if (aa.getItem(selectedIndex).isAnswer()) {
                         // If the selected item holds an answer...
                     } else {
-                        // Otherwise...
+                        // Otherwise, get children of the selected QueryView and
+                        // display.
+/*
+                        ArrayList<BTree> selectedQueryViewChildren = selectedQueryView
+                                        .getChildren();
+                        ArrayList<QueryView> selectedQueryViewChildrenQueryViews = QueryView
+                                        .queriesToQueryViews(
+                                                        LeafID.this,
+                                                        selectedQueryViewChildren);
+                                                        
+                        aa.clear();
 
                     }
                 }
+                */
             }
         });
         btnPrev.setOnClickListener(new OnClickListener() {
@@ -81,6 +105,7 @@ public class LeafID extends Activity {
 
             }
         });
+        Log.d("LID", "onCreate finished successfully");
     }
 
     // Get index of selected QueryView or return -1.
@@ -110,6 +135,7 @@ public class LeafID extends Activity {
             super(context, android.R.layout.simple_list_item_1, list);
             this.context = context;
             this.list = list;
+            Log.d("MAA", "MAA created...");
         }
 
         public View getView(int position, View convertView,
@@ -117,7 +143,8 @@ public class LeafID extends Activity {
             if (convertView == null) {
                 View view = list.get(position);
 
-                // For RelativeLayout
+                // RelativeLayout params for the QueryView cannot be cast to
+                // AbsListView params sooooo...
                 AbsListView.LayoutParams params1 = new AbsListView.LayoutParams(
                                 AbsListView.LayoutParams.MATCH_PARENT,
                                 (int) getResources()
