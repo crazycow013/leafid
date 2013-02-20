@@ -3,7 +3,9 @@ package com.example.leafid;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -125,11 +127,33 @@ public class LeafID extends Activity {
         return -1;
     }
 
-    // Manage ActionBar
+    /*
+    // Manage ActionBar (NOT USED RIGHT NOW)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.leaf_id, menu);
         return true;
+    }
+    */
+    @Override
+    public void onBackPressed() {
+        if (history.size() == 0)
+            super.onBackPressed();
+        else
+            new AlertDialog.Builder(this)
+                            .setTitle("Really exit?")
+                            .setNegativeButton(android.R.string.no,
+                                            null)
+                            .setPositiveButton(
+                                            android.R.string.yes,
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(
+                                                                DialogInterface arg0,
+                                                                int arg1) {
+
+                                                    LeafID.super.onBackPressed();
+                                                }
+                                            }).create().show();
     }
 
     // Applies QueryViews to ListView.
