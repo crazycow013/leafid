@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,18 +19,18 @@ public class QueryView extends RelativeLayout {
     private Resources r;
     private BTree query;
     // Last digit of held Query's resultID
-    private int resultID;
     // Is this the user choice?
     private boolean selected;
     // Manages visuals.
-    QueryViewView qvv;
+    private QueryViewView qvv;
 
-    public static ArrayList<QueryView> queriesToQueryViews(
+    public static ArrayList<QueryView> q2QV(
                     Context context, ArrayList<BTree> list) {
         ArrayList<QueryView> result = new ArrayList<QueryView>();
-        for (int i = 0; i < list.size(); i++) {
-            result.add(new QueryView(context, list.get(i)));
+        for (BTree b : list) {
+            result.add(new QueryView(context, b));
         }
+        Log.d("QVS", "finished q2QV");
         return result;
     }
 
@@ -49,14 +50,10 @@ public class QueryView extends RelativeLayout {
 
     private void initialize() {
         r = getResources();
-        String queryResultID = query.getResultID();
-        resultID = Integer.valueOf(query.getResultID().substring(
-                        queryResultID.length() - 1,
-                        queryResultID.length()));
         selected = true;
-        select();
         qvv = new QueryViewView();
         qvv.initializeViews();
+        select();
     }
 
     public void select() {
@@ -66,23 +63,14 @@ public class QueryView extends RelativeLayout {
     public boolean isSelected() {
         return selected;
     }
-
-    public ArrayList<BTree> getChildren() {
-        return BTree.getChildren((Query) query);
-    }
-
-    // Does this have the Query that corresponds with the user's choice?
-    public boolean hasQuery(int choice) {
-        return resultID == choice;
-    }
-
+    
     // Does this QueryView hold an Answer?
     public boolean isAnswer() {
         return query.isAnswer();
     }
-
-    public int getResultID() {
-        return resultID;
+    
+    public BTree getQuery(){
+        return query;
     }
 
     private class QueryViewView {

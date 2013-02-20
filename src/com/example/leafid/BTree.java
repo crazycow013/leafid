@@ -19,19 +19,31 @@ abstract class BTree {
 
     public abstract boolean isAnswer();
 
-    public static BTree initialize() {
-        Log.d("BTREE", "??");
-        // TODO: Return the first questions a user sees.
-        return new Query("", "");
+    public static ArrayList<BTree> initialize() {
+        ArrayList<BTree> d = new ArrayList<BTree>();
+        d.add(new Query("1", "HELLO"));
+        d.add(new Query("2", "N!"));
+        d.add(new Query("3", "HELLO"));
+        d.add(new Query("4", "NIGGAS!"));
+        return d;
     }
 
-    public static ArrayList<BTree> getChildren(Query query) {
+    public static ArrayList<BTree> getChildren(BTree query) {
         ArrayList<BTree> result = new ArrayList<BTree>();
-        result.add(new Query("11", "HELLO WORLD!!"));
-        result.add(new Query("12", "NIGGAS!!!"));
-        result.add(new Query("13", "HELLO WORLD!!"));
-        result.add(new Query("14", "NIGGAS!!!"));
+        result.add(new Query("11", "Faggot"));
+        result.add(new Query("12", "Leaves huh?"));
+        result.add(new Query("13", "BITCH"));
         return result;
+    }
+    
+    public static ArrayList<BTree> getChildren1(BTree query) {
+        ArrayList<BTree> result = new ArrayList<BTree>();
+        result.add(new Query("13", "BITCH"));
+        return result;
+    }
+    
+    public String toString(){
+        return "Q<" + resultID + "," + query + ">";
     }
 }
 
@@ -42,6 +54,7 @@ class Query extends BTree {
     public Query(String resultID, String query) {
         this.resultID = resultID;
         this.query = query;
+        Log.d("QUERY", "Query created. ResultID, query: " + resultID + query);
     }
 
     // Does this hold an answer?
@@ -52,26 +65,20 @@ class Query extends BTree {
 
 // Manages a question and a TreeCursor to display if needed.
 class Answer extends BTree {
-    TreeCursor tree;
+    int treeCursor;
 
-    public Answer(String resultID, String query, TreeCursor tree) {
+    public Answer(String resultID, String query, int treeCursor) {
         this.resultID = resultID;
         this.query = query;
-        this.tree = tree;
+        this.treeCursor = treeCursor;
     }
 
     public boolean isAnswer() {
         return true;
     }
 
-}
-
-class TreeCursor {
-    // Contains the row id of the tree in database.
-    int databaseIndex;
-
-    public TreeCursor(int _databaseIndex) {
-        databaseIndex = _databaseIndex;
+    public String toString(){
+        return "A<" + resultID + "," + query + ">";
     }
 }
 
