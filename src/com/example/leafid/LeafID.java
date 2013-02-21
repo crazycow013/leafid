@@ -7,7 +7,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +26,8 @@ public class LeafID extends Activity {
     RelativeLayout topLayout;
     ListView listView;
     MyArrayAdapter aa;
-    ArrayList<Query> history;
+    ArrayList<BTree> history;
+    Button prev;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +35,10 @@ public class LeafID extends Activity {
         setContentView(R.layout.activity_leaf_id);
         topLayout = (RelativeLayout) findViewById(R.id.TopLayout);
         listView = (ListView) findViewById(R.id.ListView);
+        prev = (Button) findViewById(R.id.BtnPrev);
 
         // Keeps track of last user BTree.
-        history = new ArrayList<Query>();
+        history = new ArrayList<BTree>();
 
         initializeChoices();
 
@@ -60,24 +64,16 @@ public class LeafID extends Activity {
             public void onClick(View v) {
                 int selectedIndex = getSelected();
                 if (selectedIndex != -1) {
-                    if (aa.getItem(selectedIndex).isAnswer()) {
-                        // TODO: Display answer tree.
-                        aa.clear();
+                    QueryView selectedQV = aa.getItem(selectedIndex);
+                    if (selectedQV.isAnswer()) {
+                        TreeView tv = new TreeView(LeafID.this, (Answer) selectedQV.getQuery());
                     } else {
-                        QueryView selectedQV = aa
-                                        .getItem(selectedIndex);
                         Query selectedQ = (Query) selectedQV
                                         .getQuery();
-                        Log.d("nOCL",
-                                        "Gotten query: "
-                                                        + selectedQ.toString());
-                        Log.d("nOCL",
-                                        "Gotten children "
-                                                        + BTree.getChildren(
-                                                                        selectedQ)
-                                                                        .toString());
                         aa.clear();
                         if (history.size() == 0)
+                            // If root, return children otherwise
+                            // return other children. FOR DEBUGGING.
                             aa.addAll(QueryView.q2QV(
                                             LeafID.this,
                                             BTree.getChildren(selectedQ)));
@@ -85,8 +81,10 @@ public class LeafID extends Activity {
                             aa.addAll(QueryView.q2QV(
                                             LeafID.this,
                                             BTree.getChildren1(selectedQ)));
-                        history.add(0, selectedQ);
+                        // Add selected query to that history stack
+                        prev.setEnabled(true);
                     }
+                    history.add(0, selectedQV.getQuery());
                 }
             }
         });
@@ -99,7 +97,7 @@ public class LeafID extends Activity {
                     history.remove(0);
                     initializeChoices();
                 } else if (history.size() > 1) {
-                    Query parent = history.remove(0);
+                    BTree parent = history.remove(0);
                     aa.clear();
                     aa.addAll(QueryView.q2QV(LeafID.this,
                                     BTree.getChildren(parent)));
@@ -115,6 +113,7 @@ public class LeafID extends Activity {
         aa = new MyArrayAdapter(this, init);
         listView.setAdapter(aa);
         Log.d("LID", "listView successfully set adapter");
+        prev.setEnabled(false);
     }
 
     // Get index of selected QueryView or return -1.
@@ -128,13 +127,11 @@ public class LeafID extends Activity {
     }
 
     /*
-    // Manage ActionBar (NOT USED RIGHT NOW)
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.leaf_id, menu);
-        return true;
-    }
-    */
+     * // Manage ActionBar (NOT USED RIGHT NOW)
+     * 
+     * @Override public boolean onCreateOptionsMenu(Menu menu) {
+     * getMenuInflater().inflate(R.menu.leaf_id, menu); return true; }
+     */
     @Override
     public void onBackPressed() {
         if (history.size() == 0)

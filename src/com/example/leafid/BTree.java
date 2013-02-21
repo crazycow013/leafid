@@ -32,7 +32,7 @@ abstract class BTree {
         ArrayList<BTree> result = new ArrayList<BTree>();
         result.add(new Query("11", "Faggot"));
         result.add(new Query("12", "Leaves huh?"));
-        result.add(new Query("13", "BITCH"));
+        result.add(new Answer("13", "BITCH", 1));
         return result;
     }
     
