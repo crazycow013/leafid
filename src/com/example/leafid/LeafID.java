@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -21,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class LeafID extends Activity {
     RelativeLayout topLayout;
@@ -66,7 +66,7 @@ public class LeafID extends Activity {
                 if (selectedIndex != -1) {
                     QueryView selectedQV = aa.getItem(selectedIndex);
                     if (selectedQV.isAnswer()) {
-                        TreeView tv = new TreeView(LeafID.this, (Answer) selectedQV.getQuery());
+                        Toast.makeText(LeafID.this, "Selected an answer!", Toast.LENGTH_SHORT).show();
                     } else {
                         Query selectedQ = (Query) selectedQV
                                         .getQuery();
